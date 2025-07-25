@@ -1,10 +1,15 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.tree;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+import src.main.jp.ac.ksu.mori.utility.TailCallUtil;
+import src.main.jp.ac.ksu.mori.utility.TailCall;
 
 
 public class Tree {
@@ -13,6 +18,7 @@ public class Tree {
     private Node startNode;
     private Map<Integer, Node> nodeNumberMap;
     private Map<String,Node> nodeNameMap;
+    private TailCallUtil tailCallUtil;
 
     public Tree(){
         this.tree = new ArrayList<>();
@@ -41,6 +47,10 @@ public class Tree {
         return this.tree;
     }
 
+    public Node getNode(Integer index){
+        return this.tree.get(index);
+    }
+
     public Node getStartNode() {
         return this.startNode;
     }
@@ -65,18 +75,43 @@ public class Tree {
         this.nodeNameMap.put(name, node);
     }
 
+    public void treeTravel(Consumer<Node> consumer){
+        tree.forEach(node -> {
+            consumer.accept(node);
+        });
+    }
+
+    public int initialTreeTravel(Function<Integer,Consumer<Node>> plusHeight,int memo){
+        AtomicInteger acc = new AtomicInteger(memo);
+
+        this.tree.forEach(node ->{
+           
+            plusHeight.apply(acc.get()).accept(node);
+            int nodeHeight = node.getNodeView().getHeight();
+            acc.addAndGet(nodeHeight);
+        });
+
+        return acc.get();
+    }
+
     public void treeTravel(Node startNode) {
 
         List<Integer> children = startNode.getNodeModel().sortChildren();
         
         children.forEach(child -> {
             Node node = nodeNumberMap.get(child);
-            System.out.println(node.getName());
+            System.out.println(node.toString());
             treeTravel(node);
         });
     }
 
+    public Integer getInitialHeight(Integer n){
+        return this.calculateHight(n,n,0).call();
+    }
 
-
+    public TailCall<Integer> calculateHight(int currentIndex,int maxIndex,int sum){
+        if(currentIndex < 0){ return this.tailCallUtil.complete(sum);}
+        return tailCallUtil.nextCall(() -> calculateHight(currentIndex-1,sum + getNode(maxIndex - currentIndex).getNodeView().getHeight(),maxIndex));
+    }
 
 }

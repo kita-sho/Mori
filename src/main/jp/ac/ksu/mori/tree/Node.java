@@ -1,8 +1,13 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.tree;
+
+import src.main.jp.ac.ksu.mori.mvc.model.NodeModel;
+import src.main.jp.ac.ksu.mori.mvc.view.NodeView;
 
 public class Node {
 
     private NodeModel nodeModel;
+    private NodeView nodeView;
+
 
     public Node() {
         this.nodeModel = new NodeModel();
@@ -14,6 +19,14 @@ public class Node {
 
     public NodeModel getNodeModel() {
         return this.nodeModel;
+    }
+
+    public NodeView setNodeView(NodeView nodeView){
+        return this.nodeView  = nodeView;
+    }
+
+    public NodeView getNodeView(){
+        return this.nodeView;
     }
 
     public Integer getId(){
@@ -30,6 +43,7 @@ public class Node {
                ", id=" + getNodeModel().getId() + 
                ", depth=" + getNodeModel().getDepth() + 
                ",children="+getNodeModel().getChildren().toString() +
+               ",parent="+getNodeModel().getParent().toString() +
                "}";
     }
     

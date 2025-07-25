@@ -1,13 +1,14 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.mvc.model;
 
 import java.util.List;
 import java.util.ArrayList;
+import src.main.jp.ac.ksu.mori.tree.Node;
 
 public class NodeModel {
 
     private String name;
     private Integer id;
-    private Integer parent;
+    private Node parent;
     private List<Integer> children;
     private Integer depth;
 
@@ -26,7 +27,7 @@ public class NodeModel {
         this.id = id;
     }
 
-    public void setParent(Integer parent){
+    public void setParent(Node parent){
         this.parent = parent;
     }
 
@@ -46,7 +47,7 @@ public class NodeModel {
         return this.id;
     }
 
-    public Integer getParent(){
+    public Node getParent(){
         return this.parent;
     }
 

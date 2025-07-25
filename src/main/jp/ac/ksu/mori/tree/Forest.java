@@ -1,7 +1,11 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.tree;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 
 public class Forest {
 
@@ -23,9 +27,16 @@ public class Forest {
         this.forest.add(tree);
     }
 
+    public void initForestTravel(Function<Integer,Consumer<Node>> plusHeight){
+        AtomicInteger acc = new AtomicInteger(0);
+        this.forest.forEach(tree -> {
+            Integer memo = tree.initialTreeTravel(plusHeight,acc.get());
+            acc.set(memo);
+        });
+    }
+
     public void forestTravel(){
         forest.forEach(tree -> {
-            System.out.println(tree.getStartNode().getName());
             tree.treeTravel(tree.getStartNode());
         });
     }

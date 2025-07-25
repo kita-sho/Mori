@@ -1,8 +1,12 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.mvc.model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import src.main.jp.ac.ksu.mori.tree.Forest;
+import src.main.jp.ac.ksu.mori.tree.Node;
+import src.main.jp.ac.ksu.mori.tree.Tree;
 
 public class TreeLoader implements AutoCloseable {
 
@@ -59,6 +63,7 @@ public class TreeLoader implements AutoCloseable {
             node.getNodeModel().setName(word[lastIndex].trim());
 
             if (tree != null){
+                tree.addNode(node);
                 tree.addNodeByName(node.getNodeModel().getName(),node);
             }
             if (word.length == 1){
@@ -81,7 +86,6 @@ public class TreeLoader implements AutoCloseable {
             Integer number = Integer.parseInt(word[0]);
             String name = word[1].trim();
 
-            
             for(Tree tree:forest.getForest()){
                 if (tree.getNodeNameMap().containsKey(name)){
                     if (tree.getNodeNameMap().get(name).getId() == null){
@@ -106,8 +110,10 @@ public class TreeLoader implements AutoCloseable {
 
             forest.getForest().forEach(tree -> {
                 if (tree.getNodeNumberMap().containsKey(parent)){
-                    Node node = tree.getNodeNumberMap().get(parent);
-                    node.getNodeModel().addChild(child);
+                    Node parentNode = tree.getNodeNumberMap().get(parent);
+                    parentNode.getNodeModel().addChild(child);
+                    Node childNode = tree.getNodeNumberMap().get(child);
+                    childNode.getNodeModel().setParent(parentNode);
                 }
             });
         }
@@ -123,7 +129,7 @@ public class TreeLoader implements AutoCloseable {
             System.out.println(e);
         }
 
-        forest.forestTravel();
+        // forest.forestTravel();
 
         // forest.getForest().forEach(tree -> {
         //     Map<Integer, Node> mapInt = tree.getNodeNumberMap();
