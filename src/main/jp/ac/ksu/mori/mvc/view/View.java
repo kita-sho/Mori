@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.concurrent.atomic.AtomicInteger;
 import src.main.jp.ac.ksu.mori.mvc.controller.Controller;
 import src.main.jp.ac.ksu.mori.mvc.model.Model;
 import src.main.jp.ac.ksu.mori.tree.Branch;
@@ -16,6 +17,9 @@ public class View  {
     private Controller controller;
     private Model model;
     private TreeJPanel treeJpanel;
+    private final int  NodeWidth = 25;
+    private final int  NodeHeight = 2;
+
 
     public View(){
         this.treeJpanel = new TreeJPanel();
@@ -48,31 +52,32 @@ public class View  {
     }
 
     public void paintInitialNode(){
-      this.model.getForest().initForestTravel(plusHeight);
+      this.model.getForest().initForestTravel(travelInitialTree);
       this.frame.repaint();
     }
 
     public void aliginTree(){
-
+        this.model.getForest().forestTravel();
     }
 
-    private Function<Integer,Consumer<Node>> plusHeight = y ->  {
+    private Function<Integer,Consumer<Node>> travelInitialTree = y ->  {
         return node -> {
             node.setNodeView(new NodeView(node.getNodeModel().getName(),0,y));
 
-            if(node.getNodeModel().getParent() != null){
-                Point childPoint = node.getNodeView().getLeftMidPoint();
-                Point parentPoint = node.getNodeModel().getParent().getNodeView().getRightMidPoint();
-                Branch branch = new Branch();
-                branch.setBranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
-                branch.getBranchView().addMouseListener(this.controller);
-                this.treeJpanel.addComponent(branch.getBranchView());
-            }
-          
+           
+            branch.getBranchView().addMouseListener(this.controller);
+            this.treeJpanel.addComponent(branch.getBranchView());
             node.getNodeView().addMouseListener(this.controller);
             this.treeJpanel.addComponent(node.getNodeView());
         };
     };
+
+
+    // private Consumer<Node> AliignTree = child ->{
+    //     Node parentNode = child.getNodeModel().getParent();
+    //     int parentWidth = parentNode.getNodeView().getWidth();
+    //     child.getNodeModel().getParent().getNodeView().setNodeView(NodeWidth + parentWidth ,0);
+    // };
 
        
     

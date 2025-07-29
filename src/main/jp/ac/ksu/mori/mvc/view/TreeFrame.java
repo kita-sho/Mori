@@ -1,6 +1,7 @@
 package src.main.jp.ac.ksu.mori.mvc.view;
 
 import javax.swing.JFrame;
+import java.awt.Color;
 
 public class TreeFrame extends JFrame {
 
@@ -11,6 +12,7 @@ public class TreeFrame extends JFrame {
         super.setTitle("Mori");
         super.setLayout(null);
         super.setBounds(500,400,1000,800);
+        super.setBackground(Color.WHITE);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setVisible(true);

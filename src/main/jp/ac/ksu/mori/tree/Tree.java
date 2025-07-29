@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
+import javax.swing.Timer;
 import src.main.jp.ac.ksu.mori.utility.TailCallUtil;
 import src.main.jp.ac.ksu.mori.utility.TailCall;
 
@@ -97,11 +97,29 @@ public class Tree {
     public void treeTravel(Node startNode) {
 
         List<Integer> children = startNode.getNodeModel().sortChildren();
+        AtomicInteger accWidth = new AtomicInteger(0);
+        AtomicInteger accHeight = new AtomicInteger(0);
+
+        
         
         children.forEach(child -> {
-            Node node = nodeNumberMap.get(child);
-            System.out.println(node.toString());
-            treeTravel(node);
+            Node childNode = this.getNodeNumberMap().get(child);
+            Node parentNode = childNode.getNodeModel().getParent();
+            int parentX = parentNode.getNodeView().getX();
+            int parentWidth = parentNode.getNodeView().getWidth();
+            int parentHeight = parentNode.getNodeView().getHeight();
+            childNode.getNodeView().setNodeView(parentX + parentWidth + 25 ,accWidth.get());
+            accWidth.getAndAdd(childNode.getNodeView().getHeight() + 2);
+            childNode.getNodeView().repaint();
+
+            if (childNode.getNodeModel().getParent() != null){
+                childNode.getBranch().getBranchView().setBranch();
+            }
+
+            if (childNode.getNodeModel().getChildren() != null){
+                treeTravel(childNode);
+            }
+
         });
     }
 

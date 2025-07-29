@@ -7,6 +7,7 @@ public class Node {
 
     private NodeModel nodeModel;
     private NodeView nodeView;
+    private Branch branch;
 
 
     public Node() {
@@ -15,6 +16,11 @@ public class Node {
 
     public void setNodeModel(NodeModel nodeModel) {
         this.nodeModel = nodeModel;
+    }
+
+    public void setBranch(Branch branch){
+        this.branch = branch;
+        this.nodeView.setBranchView(this.branch.getBranchView());
     }
 
     public NodeModel getNodeModel() {
@@ -35,6 +41,10 @@ public class Node {
 
     public String getName(){
         return this.nodeModel.getName();
+    }
+
+    public Branch getBranch(){
+        return this.branch;
     }
 
     @Override

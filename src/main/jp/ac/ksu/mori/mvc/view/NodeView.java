@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.Point;
 import javax.swing.JComponent;
+
+import src.main.jp.ac.ksu.mori.tree.Branch;
+
 import java.util.function.Function;
 
 public class NodeView extends JComponent{
@@ -13,6 +16,7 @@ public class NodeView extends JComponent{
     private final int START = 0;
     private String name;
     private Function<Integer,Integer> addPadding = x -> x + (2 * PADDING);
+    private BranchView branchView;
 
     public NodeView(){
         super.setFont(FONT);
@@ -42,7 +46,21 @@ public class NodeView extends JComponent{
 
     public void setNodeView(int startX,int startY){
         super.setBounds(startX,startY,addPadding.apply(getFontWidth()),addPadding.apply(getFontHeight()));
-        super.repaint();
+        
+        // if(node.getNodeModel().getParent() != null){
+        //         Point childPoint = node.getNodeView().getLeftMidPoint();
+        //         Point parentPoint = node.getNodeModel().getParent().getNodeView().getRightMidPoint();
+        //         Branch branch = new Branch();
+        //         branch.setBranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
+        // }
+    }
+
+    public void setBranchView(BranchView branchView){
+        this.branchView = branchView;
+    }
+
+    public BranchView getBranchView(){
+        return this.branchView;
     }
 
     public Point getTopLeftPoint(){
