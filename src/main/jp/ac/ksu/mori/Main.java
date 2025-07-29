@@ -20,7 +20,7 @@ public class Main{
         View view = new View();
         view.setModel(forest);
         view.paintInitialNode();
-        // view.aliginTree();
+        view.aliginTree();
     
     }
 

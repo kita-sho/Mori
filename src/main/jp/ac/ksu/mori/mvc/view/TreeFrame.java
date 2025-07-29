@@ -12,6 +12,7 @@ public class TreeFrame extends JFrame {
         super.setTitle("Mori");
         super.setLayout(null);
         super.setBounds(500,400,1000,800);
+        super.getContentPane().setBackground(Color.WHITE);
         super.setBackground(Color.WHITE);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

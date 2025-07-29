@@ -36,8 +36,12 @@ public class Forest {
     }
 
     public void forestTravel(){
+        AtomicInteger accHeight = new AtomicInteger(0);
+
         forest.forEach(tree -> {
-            tree.treeTravel(tree.getStartNode());
+            Integer memo = tree.treeTravel(tree.getStartNode(),accHeight.get());
+            
+            accHeight.set(memo);
         });
     }
     

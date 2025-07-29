@@ -11,7 +11,7 @@ public class TreeJPanel extends JPanel {
         super();
         setLayout(null);
         setBackground(Color.WHITE);
-        setBounds(0,0,1000,800);
+        setBounds(0,0,2000,3000);
     }
 
     public void addComponent(Component component){

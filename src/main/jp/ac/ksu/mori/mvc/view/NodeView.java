@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Point;
 import javax.swing.JComponent;
 import java.util.function.Function;
+import java.util.List;
 
 import src.main.jp.ac.ksu.mori.mvc.model.NodeModel;
 
@@ -46,17 +47,17 @@ public class NodeView extends JComponent{
     }
 
     public void updateNodeView(int startX,int startY){
-        super.setBounds(startX,startY,addPadding.apply(getFontWidth()),addPadding.apply(getFontHeight()));
+        super.setLocation(startX,startY);
         super.repaint();
 
-        if(this.branchView != null){
-            Point childPoint = this.getLeftMidPoint();
-            Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
-            this.branchView.updateBranchView(
-                (int)childPoint.getX(), (int)childPoint.getY(), 
-                (int)parentPoint.getX(), (int)parentPoint.getY()
-            );
-        }
+        // if(this.branchView != null){
+        //     Point childPoint = this.getLeftMidPoint();
+        //     Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
+        //     this.branchView.updateBranchView(
+        //         (int)parentPoint.getX(), (int)parentPoint.getY(),
+        //         (int)childPoint.getX(), (int)childPoint.getY()
+        //     );
+        // }
     }
 
     public void setBranchView(BranchView branchView){
@@ -66,6 +67,11 @@ public class NodeView extends JComponent{
     public BranchView getBranchView(){
         return this.branchView;
     }
+
+    public NodeModel getNodeModel(){
+        return this.nodeModel;
+    }
+
 
     public Point getTopLeftPoint(){
         return  new Point(getX(),getY());

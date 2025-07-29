@@ -65,7 +65,7 @@ public class View  {
 
             node.getNodeView().addMouseListener(this.controller);
             this.treeJpanel.addComponent(node.getNodeView()); 
-            
+
             if (node.getNodeView().getBranchView() != null){
                 node.getNodeView().getBranchView().addMouseListener(this.controller);
                 this.treeJpanel.addComponent(node.getNodeView().getBranchView());

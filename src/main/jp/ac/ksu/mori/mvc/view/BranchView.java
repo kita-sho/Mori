@@ -23,8 +23,13 @@ public class BranchView extends JComponent {
         super.setBounds(Math.min(startX,endX),Math.min(startY,endY), calculateSize.apply(startX,endX), calculateSize.apply(startY,endY));
     }
 
-    public void updateBranchView(int startX,int startY,int endX,int endY){
-        super.setBounds(startX,startY, calculateSize.apply(startX,endX), calculateSize.apply(startY,endY));
+    public void updateBranchView(Point parent, Point child){
+        this.startX = (int)parent.getX();
+        this.startY = (int)parent.getY();
+        this.endX = (int)child.getX();
+        this.endY = (int)child.getY();
+
+        super.setBounds(Math.min(startX,endX),Math.min(startY,endY), calculateSize.apply(startX,endX), calculateSize.apply(startY,endY));
         super.repaint();
     }
 
