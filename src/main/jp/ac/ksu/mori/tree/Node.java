@@ -2,13 +2,14 @@ package src.main.jp.ac.ksu.mori.tree;
 
 import src.main.jp.ac.ksu.mori.mvc.model.NodeModel;
 import src.main.jp.ac.ksu.mori.mvc.view.NodeView;
+import src.main.jp.ac.ksu.mori.mvc.view.BranchView;
+import java.awt.Point;
+
 
 public class Node {
 
     private NodeModel nodeModel;
     private NodeView nodeView;
-    private Branch branch;
-
 
     public Node() {
         this.nodeModel = new NodeModel();
@@ -18,17 +19,19 @@ public class Node {
         this.nodeModel = nodeModel;
     }
 
-    public void setBranch(Branch branch){
-        this.branch = branch;
-        this.nodeView.setBranchView(this.branch.getBranchView());
-    }
-
     public NodeModel getNodeModel() {
         return this.nodeModel;
     }
 
-    public NodeView setNodeView(NodeView nodeView){
-        return this.nodeView  = nodeView;
+    public void setNodeView(NodeView nodeView){
+        this.nodeView = nodeView;
+
+        if(this.nodeModel.getParent() != null){
+            Point childPoint = this.nodeView.getLeftMidPoint();
+            Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
+            BranchView branchView = new BranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
+            this.nodeView.setBranchView(branchView);
+        }
     }
 
     public NodeView getNodeView(){
@@ -41,10 +44,6 @@ public class Node {
 
     public String getName(){
         return this.nodeModel.getName();
-    }
-
-    public Branch getBranch(){
-        return this.branch;
     }
 
     @Override

@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.concurrent.atomic.AtomicInteger;
 import src.main.jp.ac.ksu.mori.mvc.controller.Controller;
 import src.main.jp.ac.ksu.mori.mvc.model.Model;
-import src.main.jp.ac.ksu.mori.tree.Branch;
 import src.main.jp.ac.ksu.mori.tree.Forest;
 import src.main.jp.ac.ksu.mori.tree.Node;
 
@@ -62,13 +61,16 @@ public class View  {
 
     private Function<Integer,Consumer<Node>> travelInitialTree = y ->  {
         return node -> {
-            node.setNodeView(new NodeView(node.getNodeModel().getName(),0,y));
+            node.setNodeView(new NodeView(node.getNodeModel().getName(),0,y,node.getNodeModel()));
 
-           
-            branch.getBranchView().addMouseListener(this.controller);
-            this.treeJpanel.addComponent(branch.getBranchView());
             node.getNodeView().addMouseListener(this.controller);
-            this.treeJpanel.addComponent(node.getNodeView());
+            this.treeJpanel.addComponent(node.getNodeView()); 
+            
+            if (node.getNodeView().getBranchView() != null){
+                node.getNodeView().getBranchView().addMouseListener(this.controller);
+                this.treeJpanel.addComponent(node.getNodeView().getBranchView());
+            }
+            this.treeJpanel.repaint();
         };
     };
 

@@ -84,8 +84,7 @@ public class Tree {
     public int initialTreeTravel(Function<Integer,Consumer<Node>> plusHeight,int memo){
         AtomicInteger acc = new AtomicInteger(memo);
 
-        this.tree.forEach(node ->{
-           
+        this.tree.forEach(node ->{   
             plusHeight.apply(acc.get()).accept(node);
             int nodeHeight = node.getNodeView().getHeight();
             acc.addAndGet(nodeHeight);
@@ -100,21 +99,14 @@ public class Tree {
         AtomicInteger accWidth = new AtomicInteger(0);
         AtomicInteger accHeight = new AtomicInteger(0);
 
-        
-        
         children.forEach(child -> {
             Node childNode = this.getNodeNumberMap().get(child);
             Node parentNode = childNode.getNodeModel().getParent();
             int parentX = parentNode.getNodeView().getX();
             int parentWidth = parentNode.getNodeView().getWidth();
             int parentHeight = parentNode.getNodeView().getHeight();
-            childNode.getNodeView().setNodeView(parentX + parentWidth + 25 ,accWidth.get());
+            childNode.getNodeView().updateNodeView(parentX + parentWidth + 25 ,accWidth.get());
             accWidth.getAndAdd(childNode.getNodeView().getHeight() + 2);
-            childNode.getNodeView().repaint();
-
-            if (childNode.getNodeModel().getParent() != null){
-                childNode.getBranch().getBranchView().setBranch();
-            }
 
             if (childNode.getNodeModel().getChildren() != null){
                 treeTravel(childNode);

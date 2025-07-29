@@ -4,10 +4,9 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.Point;
 import javax.swing.JComponent;
-
-import src.main.jp.ac.ksu.mori.tree.Branch;
-
 import java.util.function.Function;
+
+import src.main.jp.ac.ksu.mori.mvc.model.NodeModel;
 
 public class NodeView extends JComponent{
 
@@ -17,14 +16,16 @@ public class NodeView extends JComponent{
     private String name;
     private Function<Integer,Integer> addPadding = x -> x + (2 * PADDING);
     private BranchView branchView;
+    private NodeModel nodeModel;
 
     public NodeView(){
         super.setFont(FONT);
     }
 
-    public NodeView(String name,int startX,int startY){
+    public NodeView(String name,int startX,int startY,NodeModel nodeModel){
         super.setFont(FONT);
         this.name = name;
+        this.nodeModel = nodeModel;
         super.setBounds(startX,startY,addPadding.apply(getFontWidth()),addPadding.apply(getFontHeight()));
     }
     
@@ -44,15 +45,18 @@ public class NodeView extends JComponent{
         g.drawRect(START,START,getWidth(),getHeight());
     }
 
-    public void setNodeView(int startX,int startY){
+    public void updateNodeView(int startX,int startY){
         super.setBounds(startX,startY,addPadding.apply(getFontWidth()),addPadding.apply(getFontHeight()));
-        
-        // if(node.getNodeModel().getParent() != null){
-        //         Point childPoint = node.getNodeView().getLeftMidPoint();
-        //         Point parentPoint = node.getNodeModel().getParent().getNodeView().getRightMidPoint();
-        //         Branch branch = new Branch();
-        //         branch.setBranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
-        // }
+        super.repaint();
+
+        if(this.branchView != null){
+            Point childPoint = this.getLeftMidPoint();
+            Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
+            this.branchView.updateBranchView(
+                (int)childPoint.getX(), (int)childPoint.getY(), 
+                (int)parentPoint.getX(), (int)parentPoint.getY()
+            );
+        }
     }
 
     public void setBranchView(BranchView branchView){
