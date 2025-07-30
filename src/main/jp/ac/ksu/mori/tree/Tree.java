@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import javax.swing.Timer;
-import src.main.jp.ac.ksu.mori.utility.TailCallUtil;
-import src.main.jp.ac.ksu.mori.utility.TailCall;
-
 
 public class Tree {
 
@@ -19,7 +15,7 @@ public class Tree {
     private Node startNode;
     private Map<Integer, Node> nodeNumberMap;
     private Map<String,Node> nodeNameMap;
-    private TailCallUtil tailCallUtil;
+    private TreeTimer treeTimer;
 
     private final int HEIGHT = 2;
     private final int WIDHT = 25;
@@ -29,6 +25,7 @@ public class Tree {
         this.startNode = null;
         this.nodeNumberMap = new HashMap<>();
         this.nodeNameMap = new HashMap<>();
+        this.treeTimer = new TreeTimer();
     }
 
     public void setTree(List<Node> tree) {
@@ -45,6 +42,10 @@ public class Tree {
 
     public void setNodeNameMap(Map<String, Node> nodeNameMap) {
         this.nodeNameMap = nodeNameMap;
+    }
+
+    public TreeTimer getTreeTimer(){
+        return this.treeTimer;
     }
 
     public List<Node> getTree() {
@@ -87,13 +88,11 @@ public class Tree {
 
     public int initialTreeTravel(Function<Integer,Consumer<Node>> plusHeight,int memo){
         AtomicInteger acc = new AtomicInteger(memo);
-
         this.tree.forEach(node ->{   
             plusHeight.apply(acc.get()).accept(node);
             int nodeHeight = node.getNodeView().getHeight();
             acc.addAndGet(nodeHeight);
         });
-
         return acc.get();
     }
 
@@ -105,65 +104,70 @@ public class Tree {
             int currentHeight = accHeight;
     
             for (Integer child : children) {
+    
                 Node childNode = this.getNodeNumberMap().get(child);
-                Node parentNode = childNode.getNodeModel().getParent();
-    
-                int parentX = parentNode.getNodeView().getX();
-                int parentWidth = parentNode.getNodeView().getWidth();
-    
-                int childX = parentX + parentWidth + WIDHT;
                 int childY = currentHeight;
     
-                childNode.getNodeView().updateNodeView(childX, childY);
-                childNode.getNodeView().getBranchView().updateBranchView(parentNode.getNodeView().getRightMidPoint(),childNode.getNodeView().getLeftMidPoint());
-              
-                currentHeight = treeTravel(childNode, childY + childNode.getNodeView().getHeight() + 2);
+                this.treeTimer.add(() -> {
+                    Node parentNode = childNode.getNodeModel().getParent();
+                    int parentX = parentNode.getNodeView().getX();
+                    int parentWidth = parentNode.getNodeView().getWidth();
+                    int childX = parentX + parentWidth + WIDHT;
+    
+                    childNode.getNodeView().updateNodeView(childX, childY);
+                    childNode.getNodeView().getBranchView().updateBranchView(
+                        parentNode.getNodeView().getRightMidPoint(),
+                        childNode.getNodeView().getLeftMidPoint()
+                    );
+                });
+    
+                currentHeight = treeTravel(childNode, childY + childNode.getNodeView().getHeight() + HEIGHT);
             }
     
-            Node firstNode = this.getNodeNumberMap().get(children.get(0));
-            Node lastNode = this.getNodeNumberMap().get(children.get(children.size() - 1));
-    
-            Point firstNodeCoordinate = firstNode.getNodeView().getTopLeftPoint();
-            Point lastNodeCoordinate = lastNode.getNodeView().getButtomLeftPoint();
-    
-            int new_YCoordinate = (int) ((firstNodeCoordinate.getY() + lastNodeCoordinate.getY()) / 2);
-    
-            startNode.getNodeView().updateNodeView(startNode.getNodeView().getX(), new_YCoordinate);
-            // startNode.getNodeView().getBranchView().updateBranchView(startNode.getNodeModel().getParent().getNodeView().getRightMidPoint(),startNode.getNodeView().getLeftMidPoint());
+            this.treeTimer.add(() -> {
 
+               
+                
+                Node firstNode = this.getNodeNumberMap().get(children.get(0));
+                Node lastNode = this.getNodeNumberMap().get(children.get(children.size() - 1));
+                Point firstNodeCoordinate = firstNode.getNodeView().getTopLeftPoint();
+                Point lastNodeCoordinate = lastNode.getNodeView().getButtomLeftPoint();
+                int new_YCoordinate = (int) ((firstNodeCoordinate.getY() + lastNodeCoordinate.getY()) / 2);
+                startNode.getNodeView().updateNodeView(
+                    startNode.getNodeView().getX(),new_YCoordinate - (startNode.getNodeView().getHeight()/2)
+                );
+            });
+    
             List<Integer> startNodeChildren = startNode.getNodeView().getNodeModel().sortChildren();
             startNodeChildren.forEach(child -> {
                 Node childNode = this.getNodeNumberMap().get(child);
-                childNode.getNodeView().getBranchView().updateBranchView(startNode.getNodeView().getRightMidPoint(),childNode.getNodeView().getLeftMidPoint());
+                this.treeTimer.add(() -> {
+                    childNode.getNodeView().getBranchView().updateBranchView(
+                        startNode.getNodeView().getRightMidPoint(),
+                        childNode.getNodeView().getLeftMidPoint()
+                    );
+                });
             });
-
-            System.out.println(startNode.getName());
+    
             return currentHeight;
     
         } else {
-            Node parentNode = startNode.getNodeModel().getParent();
-            int parentWidth = parentNode.getNodeView().getWidth();
-            int parentX = parentNode.getNodeView().getX();
-            int childX = parentX + parentWidth + WIDHT;
-            int childY = accHeight;
+            this.treeTimer.add(() -> {
+                int childY = accHeight;
+                Node parentNode = startNode.getNodeModel().getParent();
+                int parentX = parentNode.getNodeView().getX();
+                int parentWidth = parentNode.getNodeView().getWidth();
+                int childX = parentX + parentWidth + WIDHT;
     
-            startNode.getNodeView().updateNodeView(childX, childY);
-            startNode.getNodeView().getBranchView().updateBranchView(parentNode.getNodeView().getRightMidPoint(),startNode.getNodeView().getLeftMidPoint());
-            System.out.println(startNode.getName());
-            System.out.println(parentNode.getName());
-    
-            return accHeight + startNode.getNodeView().getHeight() + 2;
+                startNode.getNodeView().updateNodeView(childX, childY);
+                startNode.getNodeView().getBranchView().updateBranchView(
+                    parentNode.getNodeView().getRightMidPoint(),
+                    startNode.getNodeView().getLeftMidPoint()
+                );
+            });
+            return accHeight + HEIGHT;
         }
     }
     
-
-    public Integer getInitialHeight(Integer n){
-        return this.calculateHight(n,n,0).call();
-    }
-
-    public TailCall<Integer> calculateHight(int currentIndex,int maxIndex,int sum){
-        if(currentIndex < 0){ return this.tailCallUtil.complete(sum);}
-        return tailCallUtil.nextCall(() -> calculateHight(currentIndex-1,sum + getNode(maxIndex - currentIndex).getNodeView().getHeight(),maxIndex));
-    }
 
 }

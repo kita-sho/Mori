@@ -6,7 +6,7 @@ public class Model {
 
     private Forest forest;
 
-    public Model(Forest forest){
+    public void setForest(Forest forest){
         this.forest = forest;
     }
 

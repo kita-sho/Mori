@@ -1,10 +1,8 @@
 package src.main.jp.ac.ksu.mori.mvc.view;
 
 import java.awt.Component;
-import java.awt.Point;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.concurrent.atomic.AtomicInteger;
 import src.main.jp.ac.ksu.mori.mvc.controller.Controller;
 import src.main.jp.ac.ksu.mori.mvc.model.Model;
 import src.main.jp.ac.ksu.mori.tree.Forest;
@@ -16,20 +14,22 @@ public class View  {
     private Controller controller;
     private Model model;
     private TreeJPanel treeJpanel;
-    private final int  NodeWidth = 25;
-    private final int  NodeHeight = 2;
-
-
+    private TreePopupMenu treePopupMenu;
+    
     public View(){
+
+        this.model = new Model();
         this.treeJpanel = new TreeJPanel();
         this.frame = new TreeFrame();
         this.frame.setPanel(this.treeJpanel);
-        this.controller = new Controller(frame);
+        this.treePopupMenu = new TreePopupMenu(model, this);
+        this.controller = new Controller(frame,treePopupMenu);
         this.treeJpanel.addMouseListener(controller);
         this.treeJpanel.addMouseMotionListener(controller);
+        this.treePopupMenu.addMouseListener(controller);
 
     }
-    
+
     public TreeFrame getTreeFrame(){
         return this.frame;
     }
@@ -38,8 +38,16 @@ public class View  {
         return this.controller;
     }
 
-    public void setModel(Forest forest){
-        this.model = new Model(forest);
+    public TreeJPanel getTreeJPanel(){
+        return this.treeJpanel;
+    }
+
+    public TreePopupMenu getTreePopupMenu(){
+        return this.treePopupMenu;
+    }
+
+    public void setForest(Forest forest){
+        this.model.setForest(forest);
     }
 
     public Model getModel(){
@@ -73,15 +81,5 @@ public class View  {
             this.treeJpanel.repaint();
         };
     };
-
-
-    // private Consumer<Node> AliignTree = child ->{
-    //     Node parentNode = child.getNodeModel().getParent();
-    //     int parentWidth = parentNode.getNodeView().getWidth();
-    //     child.getNodeModel().getParent().getNodeView().setNodeView(NodeWidth + parentWidth ,0);
-    // };
-
-       
-    
     
 }

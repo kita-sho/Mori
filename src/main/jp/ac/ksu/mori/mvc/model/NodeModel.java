@@ -8,7 +8,7 @@ public class NodeModel {
 
     private String name;
     private Integer id;
-    private Node parent;
+    private List<Node> parent;
     private List<Integer> children;
     private Integer depth;
 
@@ -27,8 +27,8 @@ public class NodeModel {
         this.id = id;
     }
 
-    public void setParent(Node parent){
-        this.parent = parent;
+    public void addParent(Node parent){
+        this.parent.add(parent);
     }
 
     public void setChildren(List<Integer> children) {
@@ -47,7 +47,7 @@ public class NodeModel {
         return this.id;
     }
 
-    public Node getParent(){
+    public List<Node> getParent(){
         return this.parent;
     }
 

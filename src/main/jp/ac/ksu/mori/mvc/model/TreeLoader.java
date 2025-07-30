@@ -3,6 +3,7 @@ package src.main.jp.ac.ksu.mori.mvc.model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
 
 import src.main.jp.ac.ksu.mori.tree.Forest;
 import src.main.jp.ac.ksu.mori.tree.Node;
@@ -13,8 +14,8 @@ public class TreeLoader implements AutoCloseable {
     private BufferedReader reader;
     private String line;
 
-    public TreeLoader(String path) throws IOException{
-        this.reader = new BufferedReader(new FileReader(path));
+    public TreeLoader(File file) throws IOException{
+        this.reader = new BufferedReader(new FileReader(file));
     }
 
     public Forest load(Forest forest) throws IOException{
@@ -48,7 +49,8 @@ public class TreeLoader implements AutoCloseable {
         Tree tree = null;
         while(!(this.line = this.readLine()).matches("nodes:$")){
             
-            if (this.line.equals( "Object")){
+            if (this.line.matches("[a-zA-Z]+")){
+                System.out.println(this.line);
                 if (tree != null){
                     forest.addTree(tree);
                 }
@@ -57,10 +59,12 @@ public class TreeLoader implements AutoCloseable {
 
             Node node = new Node();
             String[] word  = this.line.split("\\|--");
+            
 
             int lastIndex = word.length - 1;
             node.getNodeModel().setDepth(lastIndex);
             node.getNodeModel().setName(word[lastIndex].trim());
+            
 
             if (tree != null){
                 tree.addNode(node);
@@ -113,40 +117,47 @@ public class TreeLoader implements AutoCloseable {
                     Node parentNode = tree.getNodeNumberMap().get(parent);
                     parentNode.getNodeModel().addChild(child);
                     Node childNode = tree.getNodeNumberMap().get(child);
-                    childNode.getNodeModel().setParent(parentNode);
+                    childNode.getNodeModel().addParent(parentNode);
                 }
             });
         }
+
+        // forest.getForest().forEach(trees ->{
+        //     trees.getTree().forEach(node ->{
+        //             System.out.println("Parent"+node.getNodeModel().getParent().getName());
+    
+        //     });
+        // });
         return forest;
     }
 
-    public static void main(String[] args){
-        Forest forest = new Forest();
+    // public static void main(String[] args){
+    //     Forest forest = new Forest();
 
-        try (TreeLoader treeLoader = new TreeLoader("forest.txt")) {
-            forest = treeLoader.load(forest);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+    //     try (TreeLoader treeLoader = new TreeLoader("forest.txt")) {
+    //         forest = treeLoader.load(forest);
+    //     } catch (IOException e) {
+    //         System.out.println(e);
+    //     }
 
-        // forest.forestTravel();
+    //     forest.forestTravel();
 
-        // forest.getForest().forEach(tree -> {
-        //     Map<Integer, Node> mapInt = tree.getNodeNumberMap();
-        //     Map<String, Node> mapString = tree.getNodeNameMap();
-        //     Node startNode = tree.getStartNode();
+    //     forest.getForest().forEach(tree -> {
+    //         Map<Integer, Node> mapInt = tree.getNodeNumberMap();
+    //         Map<String, Node> mapString = tree.getNodeNameMap();
+    //         Node startNode = tree.getStartNode();
         
-        //     System.out.println("mapInt:");
-        //     mapInt.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
+    //         System.out.println("mapInt:");
+    //         mapInt.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
         
-        //     System.out.println("mapString:");
-        //     mapString.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
+    //         System.out.println("mapString:");
+    //         mapString.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
         
-        //     System.out.println("startNode:");
-        //     System.out.println("  " + startNode);
-        // });
+    //         System.out.println("startNode:");
+    //         System.out.println("  " + startNode);
+    //     });
         
-    }
+    // }
 
 }
 

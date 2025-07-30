@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-
 public class Forest {
 
     private List<Tree> forest;
@@ -37,10 +36,8 @@ public class Forest {
 
     public void forestTravel(){
         AtomicInteger accHeight = new AtomicInteger(0);
-
         forest.forEach(tree -> {
             Integer memo = tree.treeTravel(tree.getStartNode(),accHeight.get());
-            
             accHeight.set(memo);
         });
     }
