@@ -2,6 +2,9 @@ package src.main.jp.ac.ksu.mori.mvc.model;
 
 import src.main.jp.ac.ksu.mori.tree.Forest;
 
+/**
+ * Forestを管理するクラスです
+ */
 public class Model {
 
     private Forest forest;

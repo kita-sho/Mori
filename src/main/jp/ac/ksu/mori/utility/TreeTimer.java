@@ -1,11 +1,14 @@
-package src.main.jp.ac.ksu.mori.tree;
+package src.main.jp.ac.ksu.mori.utility;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+
+/*
+ * アニメーションを管理するクラスです
+ */
 public class TreeTimer {
 
 

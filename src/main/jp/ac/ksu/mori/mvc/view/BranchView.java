@@ -5,6 +5,10 @@ import java.awt.Graphics;
 import java.util.function.BiFunction;
 import java.awt.Point;
 
+
+/**
+ * 枝の画面を管理するクラスです
+ */
 public class BranchView extends JComponent {
 
     private int startX;

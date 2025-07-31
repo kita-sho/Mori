@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import src.main.jp.ac.ksu.mori.tree.Node;
 
+/*
+ * 葉のデータを管理するクラスです
+ */
 public class NodeModel {
 
     private String name;
@@ -15,7 +18,7 @@ public class NodeModel {
     public NodeModel(){
         this.name = new String();
         this.id = null;
-        this.parent = null;
+        this.parent = new ArrayList<Node>();
         this.children = new ArrayList<>();
     }
 

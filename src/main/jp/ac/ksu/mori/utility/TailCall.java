@@ -2,6 +2,9 @@ package src.main.jp.ac.ksu.mori.utility;
 
 import java.util.stream.Stream;
 
+/*
+ * 末尾再帰のインターフェースです
+ */
 @FunctionalInterface
 public interface TailCall<T> {
 

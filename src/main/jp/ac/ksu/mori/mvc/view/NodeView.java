@@ -5,10 +5,12 @@ import java.awt.Font;
 import java.awt.Point;
 import javax.swing.JComponent;
 import java.util.function.Function;
-import java.util.List;
-
 import src.main.jp.ac.ksu.mori.mvc.model.NodeModel;
 
+
+/*
+ * 葉の画面を管理するクラスです
+ */
 public class NodeView extends JComponent{
 
     private final Font FONT = new Font(Font.SERIF,Font.PLAIN,12);
@@ -49,15 +51,6 @@ public class NodeView extends JComponent{
     public void updateNodeView(int startX,int startY){
         super.setLocation(startX,startY);
         super.repaint();
-
-        // if(this.branchView != null){
-        //     Point childPoint = this.getLeftMidPoint();
-        //     Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
-        //     this.branchView.updateBranchView(
-        //         (int)parentPoint.getX(), (int)parentPoint.getY(),
-        //         (int)childPoint.getX(), (int)childPoint.getY()
-        //     );
-        // }
     }
 
     public void setBranchView(BranchView branchView){

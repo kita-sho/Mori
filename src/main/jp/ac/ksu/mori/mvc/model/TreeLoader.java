@@ -9,6 +9,10 @@ import src.main.jp.ac.ksu.mori.tree.Forest;
 import src.main.jp.ac.ksu.mori.tree.Node;
 import src.main.jp.ac.ksu.mori.tree.Tree;
 
+
+/**
+ * ユーザが選択したファイルから、木構造をForestクラスへ取り込むクラスです
+ */
 public class TreeLoader implements AutoCloseable {
 
     private BufferedReader reader;
@@ -50,7 +54,6 @@ public class TreeLoader implements AutoCloseable {
         while(!(this.line = this.readLine()).matches("nodes:$")){
             
             if (this.line.matches("[a-zA-Z]+")){
-                System.out.println(this.line);
                 if (tree != null){
                     forest.addTree(tree);
                 }
@@ -122,42 +125,8 @@ public class TreeLoader implements AutoCloseable {
             });
         }
 
-        // forest.getForest().forEach(trees ->{
-        //     trees.getTree().forEach(node ->{
-        //             System.out.println("Parent"+node.getNodeModel().getParent().getName());
-    
-        //     });
-        // });
         return forest;
     }
-
-    // public static void main(String[] args){
-    //     Forest forest = new Forest();
-
-    //     try (TreeLoader treeLoader = new TreeLoader("forest.txt")) {
-    //         forest = treeLoader.load(forest);
-    //     } catch (IOException e) {
-    //         System.out.println(e);
-    //     }
-
-    //     forest.forestTravel();
-
-    //     forest.getForest().forEach(tree -> {
-    //         Map<Integer, Node> mapInt = tree.getNodeNumberMap();
-    //         Map<String, Node> mapString = tree.getNodeNameMap();
-    //         Node startNode = tree.getStartNode();
-        
-    //         System.out.println("mapInt:");
-    //         mapInt.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
-        
-    //         System.out.println("mapString:");
-    //         mapString.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
-        
-    //         System.out.println("startNode:");
-    //         System.out.println("  " + startNode);
-    //     });
-        
-    // }
 
 }
 

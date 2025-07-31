@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+
+/*
+ * 複数または単一の木構造を管理するクラスです
+ */
 public class Forest {
 
     private List<Tree> forest;

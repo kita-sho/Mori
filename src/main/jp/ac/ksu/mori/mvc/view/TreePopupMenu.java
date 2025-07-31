@@ -7,8 +7,11 @@ import javax.swing.JMenuItem;
 import src.main.jp.ac.ksu.mori.mvc.model.TreeLoader;
 import src.main.jp.ac.ksu.mori.mvc.model.Model;
 import src.main.jp.ac.ksu.mori.tree.Forest;
-import src.main.jp.ac.ksu.mori.tree.TreeTimer;
+import src.main.jp.ac.ksu.mori.utility.TreeTimer;
 
+/*
+ * Popupメニューを管理するクラスです
+ */
 public class TreePopupMenu extends JPopupMenu {
 
     private Model model;
@@ -32,11 +35,6 @@ public class TreePopupMenu extends JPopupMenu {
 
             try (TreeLoader treeLoader = new TreeLoader(fileChooser.getSelectedFile())) {
                 this.model.setForest(treeLoader.load(new Forest()));
-                this.model.getForest().getForest().forEach(tree->{
-                    tree.getTree().forEach((node)->{
-                        System.out.println(node.getNodeModel().getName());
-                    });
-                });
             } catch (IOException e) {
                 System.out.println(e);
             }

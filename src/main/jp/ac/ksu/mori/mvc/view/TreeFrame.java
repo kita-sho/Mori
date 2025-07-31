@@ -3,6 +3,10 @@ package src.main.jp.ac.ksu.mori.mvc.view;
 import javax.swing.JFrame;
 import java.awt.Color;
 
+
+/*
+ * 画面のフレームを管理するクラスです
+ */
 public class TreeFrame extends JFrame {
 
     private TreeJPanel treeJPanel;

@@ -8,6 +8,11 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.function.Function;
 import java.awt.Dimension;
+
+
+/*
+ * ダイアログを管理するクラスです
+ */
 public class TreeDialog extends JDialog {
 
     private final Font FONT = new Font(Font.SERIF,Font.ITALIC,12);

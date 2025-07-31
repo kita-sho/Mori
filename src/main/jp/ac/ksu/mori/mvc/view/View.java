@@ -8,6 +8,9 @@ import src.main.jp.ac.ksu.mori.mvc.model.Model;
 import src.main.jp.ac.ksu.mori.tree.Forest;
 import src.main.jp.ac.ksu.mori.tree.Node;
 
+/*
+ * すべての画面を管理するクラスです
+ */
 public class View  {
 
     private TreeFrame frame;

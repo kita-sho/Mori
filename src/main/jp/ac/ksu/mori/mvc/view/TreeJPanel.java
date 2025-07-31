@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JPanel;
 
-public class TreeJPanel extends JPanel {
 
+/*
+ * Panelを管理するクラスです
+ */
+public class TreeJPanel extends JPanel {
 
     public TreeJPanel(){
         super();

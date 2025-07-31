@@ -1,5 +1,8 @@
 package src.main.jp.ac.ksu.mori.utility;
 
+/*
+ * TailCallの実装クラスです
+ */
 public class TailCallUtil {
 
     public <T> TailCall<T> nextCall(TailCall<T> function) {

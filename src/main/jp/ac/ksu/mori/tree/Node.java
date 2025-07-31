@@ -5,7 +5,9 @@ import src.main.jp.ac.ksu.mori.mvc.view.NodeView;
 import src.main.jp.ac.ksu.mori.mvc.view.BranchView;
 import java.awt.Point;
 
-
+/*
+ * 葉のデータと画面を管理するクラスです
+ */
 public class Node {
 
     private NodeModel nodeModel;
@@ -28,9 +30,17 @@ public class Node {
 
         if(this.nodeModel.getParent() != null){
             Point childPoint = this.nodeView.getLeftMidPoint();
-            Point parentPoint = this.nodeModel.getParent().getNodeView().getRightMidPoint();
-            BranchView branchView = new BranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
-            this.nodeView.setBranchView(branchView);
+            this.nodeModel.getParent().forEach(parent ->{
+
+                if (parent.getNodeView() != null){
+                    Point parentPoint = parent.getNodeView().getRightMidPoint();
+                    BranchView branchView = new BranchView((int)childPoint.getX(), (int)childPoint.getY(), (int)parentPoint.getX(), (int)parentPoint.getY());
+                    this.nodeView.setBranchView(branchView);
+                }else{
+                    BranchView branchView = new BranchView((int)childPoint.getX(), (int)childPoint.getY(), 0, 0);
+                    this.nodeView.setBranchView(branchView);
+                }
+            });
         }
     }
 
