@@ -42,7 +42,6 @@
 			jarfile="${package}.jar"
 			basedir="${destdir}"
 			manifest="MANIFEST.mf">
-			<fileset dir="./resource/icon" />
 		</jar>
 		<exec executable="date" spawn="false" />
 	</target>

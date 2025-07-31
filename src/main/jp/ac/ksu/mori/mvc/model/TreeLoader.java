@@ -1,16 +1,25 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.mvc.model;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
 
+import src.main.jp.ac.ksu.mori.tree.Forest;
+import src.main.jp.ac.ksu.mori.tree.Node;
+import src.main.jp.ac.ksu.mori.tree.Tree;
+
+
+/**
+ * ユーザが選択したファイルから、木構造をForestクラスへ取り込むクラスです
+ */
 public class TreeLoader implements AutoCloseable {
 
     private BufferedReader reader;
     private String line;
 
-    public TreeLoader(String path) throws IOException{
-        this.reader = new BufferedReader(new FileReader(path));
+    public TreeLoader(File file) throws IOException{
+        this.reader = new BufferedReader(new FileReader(file));
     }
 
     public Forest load(Forest forest) throws IOException{
@@ -44,7 +53,7 @@ public class TreeLoader implements AutoCloseable {
         Tree tree = null;
         while(!(this.line = this.readLine()).matches("nodes:$")){
             
-            if (this.line.equals( "Object")){
+            if (this.line.matches("[a-zA-Z]+")){
                 if (tree != null){
                     forest.addTree(tree);
                 }
@@ -53,12 +62,15 @@ public class TreeLoader implements AutoCloseable {
 
             Node node = new Node();
             String[] word  = this.line.split("\\|--");
+            
 
             int lastIndex = word.length - 1;
             node.getNodeModel().setDepth(lastIndex);
             node.getNodeModel().setName(word[lastIndex].trim());
+            
 
             if (tree != null){
+                tree.addNode(node);
                 tree.addNodeByName(node.getNodeModel().getName(),node);
             }
             if (word.length == 1){
@@ -81,7 +93,6 @@ public class TreeLoader implements AutoCloseable {
             Integer number = Integer.parseInt(word[0]);
             String name = word[1].trim();
 
-            
             for(Tree tree:forest.getForest()){
                 if (tree.getNodeNameMap().containsKey(name)){
                     if (tree.getNodeNameMap().get(name).getId() == null){
@@ -106,40 +117,15 @@ public class TreeLoader implements AutoCloseable {
 
             forest.getForest().forEach(tree -> {
                 if (tree.getNodeNumberMap().containsKey(parent)){
-                    Node node = tree.getNodeNumberMap().get(parent);
-                    node.getNodeModel().addChild(child);
+                    Node parentNode = tree.getNodeNumberMap().get(parent);
+                    parentNode.getNodeModel().addChild(child);
+                    Node childNode = tree.getNodeNumberMap().get(child);
+                    childNode.getNodeModel().addParent(parentNode);
                 }
             });
         }
+
         return forest;
-    }
-
-    public static void main(String[] args){
-        Forest forest = new Forest();
-
-        try (TreeLoader treeLoader = new TreeLoader("forest.txt")) {
-            forest = treeLoader.load(forest);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        forest.forestTravel();
-
-        // forest.getForest().forEach(tree -> {
-        //     Map<Integer, Node> mapInt = tree.getNodeNumberMap();
-        //     Map<String, Node> mapString = tree.getNodeNameMap();
-        //     Node startNode = tree.getStartNode();
-        
-        //     System.out.println("mapInt:");
-        //     mapInt.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
-        
-        //     System.out.println("mapString:");
-        //     mapString.forEach((k, v) -> System.out.println("  key=" + k + ", value=" + v));
-        
-        //     System.out.println("startNode:");
-        //     System.out.println("  " + startNode);
-        // });
-        
     }
 
 }

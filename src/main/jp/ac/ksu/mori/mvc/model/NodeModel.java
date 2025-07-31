@@ -1,20 +1,24 @@
-package src.main.jp.ac.ksu.mori.mvc;
+package src.main.jp.ac.ksu.mori.mvc.model;
 
 import java.util.List;
 import java.util.ArrayList;
+import src.main.jp.ac.ksu.mori.tree.Node;
 
+/*
+ * 葉のデータを管理するクラスです
+ */
 public class NodeModel {
 
     private String name;
     private Integer id;
-    private Integer parent;
+    private List<Node> parent;
     private List<Integer> children;
     private Integer depth;
 
     public NodeModel(){
         this.name = new String();
         this.id = null;
-        this.parent = null;
+        this.parent = new ArrayList<Node>();
         this.children = new ArrayList<>();
     }
 
@@ -26,8 +30,8 @@ public class NodeModel {
         this.id = id;
     }
 
-    public void setParent(Integer parent){
-        this.parent = parent;
+    public void addParent(Node parent){
+        this.parent.add(parent);
     }
 
     public void setChildren(List<Integer> children) {
@@ -46,7 +50,7 @@ public class NodeModel {
         return this.id;
     }
 
-    public Integer getParent(){
+    public List<Node> getParent(){
         return this.parent;
     }
 
